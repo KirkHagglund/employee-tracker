@@ -37,7 +37,7 @@ inquirer
         {
             type: 'list',
             message: "What is the employee's role?",
-            name: 'rolename',
+            name: 'pickrole',
             choices: ['Role 1', 'Role 2', 'Role 3'],
             when: (answers) => answers.lastname,
         },
@@ -46,6 +46,20 @@ inquirer
             message: "Who is the employee's manager?",
             name: 'pickmanager',
             choices: ['Manager 1', 'Manager 2', 'Manager 3'],
+            when: (answers) => answers.pickrole,
+        },
+        {
+            type: 'list',
+            message: "What is the employee's name?",
+            name: 'rolename',
+            choices: ['Name 1', 'Name 2'],
+            when: (answers) => answers.menu === 'update an employee role',
+        },
+        {
+            type: 'list',
+            message: "What is the employee's new role?",
+            name: 'updaterole',
+            choices: ['Role 1', 'Role 2'],
             when: (answers) => answers.rolename,
         }
     ]);
