@@ -11,19 +11,8 @@ const addRole = require('./lib/query');
 const addEmployee = require('./lib/query');
 const updateRole = require('./lib/query');*/
 
-// Create connection
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        user: 'root',
-        password: 'Trebek22!',
-        database: 'company_db'
-    },
-    console.log('Connected to the company_db database.')
-);
-
 // Function containing initial inquirer prompt question and switch statements
-const init = function () {
+const init = async () => {
     inquirer
         .prompt([
             {
@@ -33,11 +22,10 @@ const init = function () {
                 choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role'],
             }
         ])
-        .then(async (answer) => {
+        .then((answer) => {
             switch (answer.menu) {
                 case 'view all departments':
-                    await viewDepts();
-                    init();
+                    viewDepts();
                     break;
                 case 'view all roles':
                     viewRoles();
@@ -106,10 +94,12 @@ const init = function () {
                     ]).then(updateRole());
                     break;
             };
-        });
+        })
+        .then(() => {
+            init();
+        })
 };
 
 // Function call to initialize app
 init();
 
-module.exports = init;
