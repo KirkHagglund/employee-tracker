@@ -1,8 +1,18 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2')
+const mysql = require('mysql2');
 const consoleTable = require('console.table');
 
-inquirer
+const db = mysql.createConnection(
+    {
+        host: 'localhost',
+        user: 'root',
+        password: 'Trebek22!',
+        database: 'company_db'
+    },
+    console.log('Connected to the company_db database.')
+);
+
+/*inquirer
     .prompt([
         {
             type: 'list',
@@ -62,4 +72,48 @@ inquirer
             choices: ['Role 1', 'Role 2'],
             when: (answers) => answers.rolename,
         }
-    ]);
+    ]);*/
+
+// Main inquirer menu question
+const mainMenu = [
+    {
+        type: 'input',
+        message: 'What would you like to do?',
+        name: 'menu',
+        choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role'],
+    },
+];
+
+// Function containing initial inquirer prompt question and switch statement
+const init = function () {
+    inquirer
+        .prompt(mainMenu)
+        .then((answer) => {
+            switch (answer.mainMenu) {
+                case mainMenu.menu === 'view all departments':
+                    viewDepts();
+                    break;
+                case mainMenu.menu === 'view all roles':
+                    viewRoles();
+                    break;
+                case mainMenu.menu === 'view all employees':
+                    viewEmployees();
+                    break;
+                case mainMenu.menu === 'add a department':
+                    addDept();
+                    break;
+                case mainMenu.menu === 'add a role':
+                    addRole();
+                    break;
+                case mainMenu.menu === 'add an employee':
+                    addEmployee();
+                    break;
+                case mainMenu.menu === 'update an employee role':
+                    updateRole();
+                    break;
+            };
+        })
+};
+
+// Function call to initialize app
+init();
