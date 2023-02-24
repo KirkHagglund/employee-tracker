@@ -4,12 +4,12 @@ const mysql = require('mysql2');
 const consoleTable = require('console.table');
 
 const viewDepts = require('./lib/query');
-const viewRoles = require('./lib/query');
+/*const viewRoles = require('./lib/query');
 const viewEmployees = require('./lib/query');
 const addDept = require('./lib/query');
 const addRole = require('./lib/query');
 const addEmployee = require('./lib/query');
-const updateRole = require('./lib/query');
+const updateRole = require('./lib/query');*/
 
 // Create connection
 const db = mysql.createConnection(
