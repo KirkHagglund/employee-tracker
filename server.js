@@ -33,10 +33,11 @@ const init = function () {
                 choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role'],
             }
         ])
-        .then((answer) => {
+        .then(async (answer) => {
             switch (answer.menu) {
                 case 'view all departments':
-                    viewDepts();
+                    await viewDepts();
+                    init();
                     break;
                 case 'view all roles':
                     viewRoles();
