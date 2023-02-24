@@ -3,6 +3,14 @@ const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const consoleTable = require('console.table');
 
+const viewDepts = require('./lib/query');
+const viewRoles = require('./lib/query');
+const viewEmployees = require('./lib/query');
+const addDept = require('./lib/query');
+const addRole = require('./lib/query');
+const addEmployee = require('./lib/query');
+const updateRole = require('./lib/query');
+
 // Create connection
 const db = mysql.createConnection(
     {
@@ -14,32 +22,29 @@ const db = mysql.createConnection(
     console.log('Connected to the company_db database.')
 );
 
-// Main inquirer menu question
-const mainMenu = [
-    {
-        type: 'input',
-        message: 'What would you like to do?',
-        name: 'menu',
-        choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role'],
-    },
-];
-
-// Function containing initial inquirer prompt question and switch statement
+// Function containing initial inquirer prompt question and switch statements
 const init = function () {
     inquirer
-        .prompt(mainMenu)
+        .prompt([
+            {
+                type: 'list',
+                message: 'What would you like to do?',
+                name: 'menu',
+                choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role'],
+            }
+        ])
         .then((answer) => {
-            switch (answer.mainMenu) {
-                case mainMenu.menu === 'view all departments':
+            switch (answer.menu) {
+                case 'view all departments':
                     viewDepts();
                     break;
-                case mainMenu.menu === 'view all roles':
+                case 'view all roles':
                     viewRoles();
                     break;
-                case mainMenu.menu === 'view all employees':
+                case 'view all employees':
                     viewEmployees();
                     break;
-                case mainMenu.menu === 'add a department':
+                case 'add a department':
                     inquirer.prompt([
                         {
                             type: 'input',
@@ -48,7 +53,7 @@ const init = function () {
                         }
                     ]).then(addDept());
                     break;
-                case mainMenu.menu === 'add a role':
+                case 'add a role':
                     inquirer.prompt([
                         {
                             type: 'input',
@@ -57,7 +62,7 @@ const init = function () {
                         }
                     ]).then(addRole());
                     break;
-                case mainMenu.menu === 'add an employee':
+                case 'add an employee':
                     inquirer.prompt([
                         {
                             type: 'input',
@@ -83,7 +88,7 @@ const init = function () {
                         }
                     ]).then(addEmployee());
                     break;
-                case mainMenu.menu === 'update an employee role':
+                case 'update an employee role':
                     inquirer.prompt([
                         {
                             type: 'list',
@@ -95,7 +100,7 @@ const init = function () {
                             type: 'list',
                             message: "What is the employee's new role?",
                             name: 'updaterole',
-                            choices: ['VP of Sales', 'Sales Team', 'Chief Financial Officer', 'Accountant', 'Chief Legal Officer', 'Legal Team', 'VP of HR', 'HR Liaison'], 
+                            choices: ['VP of Sales', 'Sales Team', 'Chief Financial Officer', 'Accountant', 'Chief Legal Officer', 'Legal Team', 'VP of HR', 'HR Liaison'],
                         }
                     ]).then(updateRole());
                     break;
@@ -105,3 +110,5 @@ const init = function () {
 
 // Function call to initialize app
 init();
+
+module.exports = init;
