@@ -20,7 +20,7 @@ function init() {
                 type: 'list',
                 message: 'What would you like to do?',
                 name: 'menu',
-                choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role'],
+                choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'exit'],
             }
         ])
         .then(console.log('\n'))
@@ -45,26 +45,16 @@ function init() {
                     addEmployee();
                     break;
                 case 'update an employee role':
-                    inquirer.prompt([
-                        {
-                            type: 'list',
-                            message: "What is the employee's name?",
-                            name: 'rolename',
-                            choices: ['Kirk Hagglund', 'Sanaria Clarke', 'Sal Hobbi', 'Mark Alfano', 'Stephen Fudge', 'Mark Elliot', 'Mario Repas', 'Taddeo Costanzo', 'Sarah Pascual'],
-                        },
-                        {
-                            type: 'list',
-                            message: "What is the employee's new role?",
-                            name: 'updaterole',
-                            choices: ['VP of Sales', 'Sales Team', 'Chief Financial Officer', 'Accountant', 'Chief Legal Officer', 'Legal Team', 'VP of HR', 'HR Liaison'],
-                        }
-                    ]).then(updateRole());
+                    updateRole();
                     break;
+                case 'exit':
+                    process.exit();
             };
         })
 
 };
 
+// Query function section
 function viewDepts() {
     db.query('SELECT * FROM department', (err, results) => {
         if (err) {
@@ -222,6 +212,62 @@ function addEmployee() {
         init();
     });
 });
+};
+
+function updateRole() {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                message: "What is the employee's name?",
+                name: 'rolename',
+                choices: ['Stephen Fudge', 'Mark Elliot', 'Mario Repas', 'Taddeo Costanzo', 'Sarah Pascual'],
+            },
+            {
+                type: 'list',
+                message: "What is the employee's new role?",
+                name: 'updaterole',
+                choices: ['Sales Team', 'Accountant', 'Legal Team', 'HR Liaison'],
+            }
+        ]).then((answer) => {
+            let empId;
+            if (answer.rolename === 'Stephen Fudge') {
+                empId = 5;
+            }
+            else if (answer.rolename === 'Mark Elliot') {
+                empId = 6;
+            }
+            else if (answer.rolename === 'Mario Repas') {
+                empId = 7;
+            }
+            else if (answer.rolename === 'Taddeo Costanzo') {
+                empId = 8;
+            }
+            else {
+                empId = 9;
+            }
+            let roleId;
+            if (answer.updaterole === 'Sales Team') {
+                roleId = 2;
+            }
+            else if (answer.updaterole === 'Accountant') {
+                roleId = 4;
+            }
+            else if (answer.updaterole === 'Legal Team') {
+                roleId = 6;
+            }
+            else {
+                roleId = 8;
+            }
+            db.query(`UPDATE employee SET role_id = ${roleId} WHERE id = ${empId}`, (err) => {
+                if (err) {
+                    console.log(err);
+                    process.exit();
+                }
+                console.log('Employee role updated.');
+                init();
+            });
+        });
 };
 
 // Function call to initialize app
