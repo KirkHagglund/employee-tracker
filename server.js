@@ -12,6 +12,9 @@ const db = mysql.createConnection(
     },
 );
 
+// Initial welcome message
+console.log('Welcome to the company database.')
+
 // Function containing initial inquirer prompt question and switch statements
 function init() {
     inquirer
@@ -55,6 +58,8 @@ function init() {
 };
 
 // Query function section
+
+//Query function for viewing the departments
 function viewDepts() {
     db.query('SELECT * FROM department', (err, results) => {
         if (err) {
@@ -66,6 +71,7 @@ function viewDepts() {
     });
 };
 
+// View roles query function with custom joined table
 function viewRoles() {
     db.query('SELECT title AS "Title", role_.id AS "ID", salary AS "Salary", dept_name AS "Department" FROM role_ JOIN department ON role_.department_id = department.id', (err, results) => {
         if (err) {
@@ -77,6 +83,7 @@ function viewRoles() {
     });
 };
 
+// View employee query function with custom joined table
 function viewEmployees() {
     db.query("SELECT employee.id AS ID, concat(first_name,' ', last_name) AS Name, title AS Title, salary AS Salary FROM employee JOIN role_ ON employee.role_id = role_.id", (err, results) => {
         if (err) {
@@ -88,6 +95,7 @@ function viewEmployees() {
     });
 };
 
+// Query function for adding a new department
 function addDept() {
     inquirer
         .prompt([
@@ -110,6 +118,7 @@ function addDept() {
         )
 };
 
+// Query function for adding a new role
 function addRole() {
     inquirer.prompt([
         {
@@ -155,6 +164,7 @@ function addRole() {
     });
 };
 
+// Query function for adding a new employee
 function addEmployee() {
     inquirer
         .prompt([
@@ -214,6 +224,7 @@ function addEmployee() {
 });
 };
 
+// Update Role query function
 function updateRole() {
     inquirer
         .prompt([
