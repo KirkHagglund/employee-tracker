@@ -27,6 +27,8 @@
 
   ## Usage
   To use this app, run npm install to import the necessary libraries. Then populate your database by logging onto mysql. Once logged in, run commands "source db/schema.sql;" and "source db/seed.sql;" in succession to create and seed the starting data. After quitting mysql, run the command npm start to open the application. Follow instructions to select and input data at your choosing.
+  
+  Video Link: https://drive.google.com/file/d/1-wh4XTV0cNaf_wZd4y2YKFnW6HJtfTFu/view?usp=share_link
 
  ![A screenshot of a generated README file](./assets/images/screenshot.png)
 
